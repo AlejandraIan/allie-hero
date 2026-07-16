@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Allie — hero</title>
+<style>
+  html, body { margin:0; padding:0; background:#FFFFFF; }
+  #allie-hero {
+    background:#FFFFFF; padding:70px 20px 100px; text-align:center;
+    font-family:'Helvetica Neue',Arial,sans-serif; overflow:hidden; position:relative;
+  }
+  #card-stack { position:relative; width:100%; max-width:900px; height:420px; margin:0 auto; }
+  .hero-card {
+    position:absolute; top:50%; left:50%;
+    width:220px; height:280px; margin-left:-110px; margin-top:-140px;
+    border-radius:20px; box-shadow:0 12px 30px rgba(0,0,0,0.15);
+    background-size:cover; background-position:center;
+    transition:transform .15s ease-out;
+  }
+  @media (max-width: 640px) {
+    .hero-card { width:150px; height:190px; margin-left:-75px; margin-top:-95px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="allie-hero">
+  <div id="card-stack"></div>
+</div>
+
+<script>
+(function(){
+  var projects = [
+    { img:'https://images.squarespace-cdn.com/content/69d6f363ef5bcb1f18b6e354/9db3c4e6-357d-43ea-a35c-7c9d7da0bde3/PORTFOLIO-HERO-01.jpg?content-type=image%2Fjpeg', fallback:'#C89B2C', rotate:-12, x:-210, y:20,  depth:0.5, pos:'35% center' },
+    { img:'https://images.squarespace-cdn.com/content/69d6f363ef5bcb1f18b6e354/a0297d2a-9dc8-4cf5-91a9-6d8c161f9e2f/PORTFOLIO+HERO-02.png?content-type=image%2Fpng', fallback:'#7CB518', rotate:-4, x:-70, y:-10, depth:0.9 },
+    { img:'https://images.squarespace-cdn.com/content/69d6f363ef5bcb1f18b6e354/17c06806-ab82-4dfd-8537-54db3968ca33/PORTFOLIO+HERO-03.png?content-type=image%2Fpng', fallback:'#E4A400', rotate:5, x:70, y:-10, depth:0.9 },
+    { img:'https://images.squarespace-cdn.com/content/69d6f363ef5bcb1f18b6e354/acc1bbe7-926b-40a8-9499-ca50d9717ae9/PORTFOLIO+HERO-04.png?content-type=image%2Fpng', fallback:'#6B4A9E', rotate:13, x:210, y:20, depth:0.5, size:'contain' }
+  ];
+
+  var stack = document.getElementById('card-stack');
+
+  projects.forEach(function(p){
+    var card = document.createElement('div');
+    card.className = 'hero-card';
+    card.style.backgroundColor = p.fallback;
+    card.style.backgroundImage = "url('" + p.img + "')";
+    if (p.size) { card.style.backgroundSize = p.size; }
+    if (p.pos) { card.style.backgroundPosition = p.pos; }
+    card.style.transform = 'translate(' + p.x + 'px,' + p.y + 'px) rotate(' + p.rotate + 'deg)';
+    stack.appendChild(card);
+    p.el = card;
+    p.baseX = p.x;
+    p.baseY = p.y;
+  });
+
+  stack.addEventListener('mousemove', function(e){
+    var rect = stack.getBoundingClientRect();
+    var mx = e.clientX - rect.left - rect.width / 2;
+    var my = e.clientY - rect.top - rect.height / 2;
+    projects.forEach(function(p){
+      var moveX = (mx / rect.width) * 40 * p.depth;
+      var moveY = (my / rect.height) * 40 * p.depth;
+      p.el.style.transform = 'translate(' + (p.baseX + moveX) + 'px,' + (p.baseY + moveY) + 'px) rotate(' + p.rotate + 'deg)';
+    });
+  });
+
+  stack.addEventListener('mouseleave', function(){
+    projects.forEach(function(p){
+      p.el.style.transform = 'translate(' + p.baseX + 'px,' + p.baseY + 'px) rotate(' + p.rotate + 'deg)';
+    });
+  });
+})();
+</script>
+</body>
+</html>
