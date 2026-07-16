@@ -19,8 +19,11 @@
   transition:transform .15s ease-out;
 }
   @media (max-width: 640px) {
-    .hero-card { width:150px; height:190px; margin-left:-75px; margin-top:-95px; }
-  }
+  #card-stack { transform: scale(0.62); transform-origin: 50% 30%; height:300px; }
+}
+@media (max-width: 420px) {
+  #card-stack { transform: scale(0.46); height:250px; }
+}
 </style>
 </head>
 <body>
